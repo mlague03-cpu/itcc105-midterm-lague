@@ -1,0 +1,83 @@
+// ASSCAT AI Copilot - EXACT match to wireframe design
+
+void main() {
+  // These EXACTLY match the wireframe options
+  String userIntent = 'check payment';  // Matches "💰 Check my payment"
+  
+  // Bonus offline mode
+  bool isInternetConnected = true;  // Change to false for offline bonus
+  
+  // SAME header as wireframe
+  print('\n╔════════════════════════════════╗');
+  print('║   🎓 ASSCAT AI COPILOT        ║');
+  print('╚════════════════════════════════╝');
+  
+  print('\n🎤 You said: "$userIntent"');
+  
+  // Offline check
+  if (isInternetConnected == false) {
+    print('\n⚠️ OFFLINE MODE - Showing saved data ⚠️');
+  }
+  
+  print('\n' + '─' * 35);
+  
+  // RESPONSES THAT MATCH THE WIREFRAME DESIGN
+  
+  // Option 1: Check my payment (💰 icon from wireframe)
+  if (userIntent == 'check payment') {
+    print('💰 YOUR PAYMENT STATUS:');
+    print('   • Tuition: PAID (PHP 8,500)');
+    print('   • Library Fee: PENDING (PHP 500)');
+    print('   • Total Due: PHP 500');
+    print('\n💡 Deadline: March 30, 2026');
+    
+    if (isInternetConnected == false) {
+      print('\n📱 [Cached: No pending as of March 10]');
+    }
+    
+  // Option 2: Show my schedule (📅 icon from wireframe)  
+  } else if (userIntent == 'show my schedule') {
+    print('📅 YOUR SCHEDULE TODAY:');
+    print('   • 8:00 AM - ITCC 105 (Room 203)');
+    print('   • 10:30 AM - MATH 101 (Room 105)');
+    print('   • 1:00 PM - PHILO 101 (Room 304)');
+    print('\n✅ Next class: ITCC 105 in 30 minutes');
+    
+    if (isInternetConnected == false) {
+      print('\n📱 [Cached: Regular MWF schedule]');
+    }
+    
+  // Option 3: Enrollment help (📋 icon from wireframe)  
+  } else if (userIntent == 'enrollment help') {
+    print('📋 ENROLLMENT REQUIREMENTS:');
+    print('   • Clearance from Library');
+    print('   • Clearance from Accounting');
+    print('   • Advising from Department');
+    print('   • Assessment at Registrar');
+    print('   • Payment at Cashier');
+    print('\n📅 Enrollment: May 15 - June 15, 2026');
+    
+    if (isInternetConnected == false) {
+      print('\n📱 [Cached: Same requirements apply]');
+    }
+    
+  // If user says something else
+  } else {
+    print('❌ I didn\'t understand "$userIntent"');
+    print('\n💡 Please try one of these:');
+    print('   • "check payment"');
+    print('   • "show my schedule"');
+    print('   • "enrollment help"');
+  }
+  
+  print('\n' + '─' * 35);
+  
+  // SAME footer as wireframe
+  if (isInternetConnected == false) {
+    print('🔌 OFFLINE-FIRST MODE | Last sync: March 14, 2026');
+  } else {
+    print('✅ Online mode | Real-time data active');
+  }
+  
+  print('✨ ASSCAT AI Copilot - Your campus assistant ✨\n');
+}
