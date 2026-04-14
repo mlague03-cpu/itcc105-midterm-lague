@@ -1,83 +1,354 @@
-// ASSCAT AI Copilot - EXACT match to wireframe design
+import 'package:flutter/material.dart';
 
 void main() {
-  // These EXACTLY match the wireframe options
-  String userIntent = 'check payment';  // Matches "💰 Check my payment"
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'ASSCAT AI Copilot',
+      theme: ThemeData(
+        fontFamily: 'Poppins',
+        useMaterial3: true,
+      ),
+      home: CopilotScreen(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class CopilotScreen extends StatefulWidget {
+  @override
+  _CopilotScreenState createState() => _CopilotScreenState();
+}
+
+class _CopilotScreenState extends State<CopilotScreen> {
+  // Offline-First boolean (BONUS +5 pts)
+  bool isInternetConnected = true; // Change to false for offline mode
   
-  // Bonus offline mode
-  bool isInternetConnected = true;  // Change to false for offline bonus
+  String aiResponse = "👋 Hi! I'm your ASSCAT assistant. What do you need?";
   
-  // SAME header as wireframe
-  print('\n╔════════════════════════════════╗');
-  print('║   🎓 ASSCAT AI COPILOT        ║');
-  print('╚════════════════════════════════╝');
-  
-  print('\n🎤 You said: "$userIntent"');
-  
-  // Offline check
-  if (isInternetConnected == false) {
-    print('\n⚠️ OFFLINE MODE - Showing saved data ⚠️');
+  void processIntent(String intent) {
+    setState(() {
+      // Offline check
+      if (!isInternetConnected) {
+        aiResponse = "⚠️ OFFLINE MODE - Showing cached data\n\n";
+      } else {
+        aiResponse = "";
+      }
+      
+      // Intent logic
+      if (intent == "check payment" || intent == "payment") {
+        if (isInternetConnected) {
+          aiResponse += "💰 PAYMENT STATUS:\n• Tuition: PAID ₱15,000\n• Library Fee: PENDING ₱500\n• Sports Fee: PAID ₱300\n\n💡 Due date: April 30, 2026";
+        } else {
+          aiResponse += "📱 [CACHED] Payment as of Mar 14:\n• Tuition: PAID\n• Library Fee: PENDING\n\nConnect to Wi-Fi for latest balance.";
+        }
+      }
+      else if (intent == "schedule" || intent == "show my schedule") {
+        if (isInternetConnected) {
+          aiResponse += "📅 YOUR SCHEDULE (Monday):\n• 8:00 AM - ITCC 105 (Room 203)\n• 10:30 AM - MATH 101 (Room 105)\n• 1:00 PM - PHILO 101 (Room 304)\n\n🎯 Next class: ITCC 105 in 30 mins";
+        } else {
+          aiResponse += "📱 [CACHED] Monday Schedule:\n• ITCC 105 - 8:00 AM\n• MATH 101 - 10:30 AM\n• PHILO 101 - 1:00 PM";
+        }
+      }
+      else if (intent == "enrollment help" || intent == "enrollment") {
+        if (isInternetConnected) {
+          aiResponse += "📄 ENROLLMENT HELP:\n✅ Step 1: Clearance from Library\n✅ Step 2: Pay tuition (₱15,000)\n✅ Step 3: Advising with Dept Chair\n✅ Step 4: Enroll online or in Registrar\n\n📅 Enrollment period: May 1-30, 2026";
+        } else {
+          aiResponse += "📱 [CACHED] Enrollment steps:\n1. Clearance\n2. Payment\n3. Advising\n4. Enrollment\n\nConnect to Wi-Fi for forms.";
+        }
+      }
+      else {
+        aiResponse += "🤔 I didn't understand '$intent'.\n\nTry asking:\n• 'check payment'\n• 'show my schedule'\n• 'enrollment help'";
+      }
+      
+      if (!isInternetConnected) {
+        aiResponse += "\n\n⚠️ You're offline. Connect for updates.";
+      }
+    });
   }
   
-  print('\n' + '─' * 35);
-  
-  // RESPONSES THAT MATCH THE WIREFRAME DESIGN
-  
-  // Option 1: Check my payment (💰 icon from wireframe)
-  if (userIntent == 'check payment') {
-    print('💰 YOUR PAYMENT STATUS:');
-    print('   • Tuition: PAID (PHP 8,500)');
-    print('   • Library Fee: PENDING (PHP 500)');
-    print('   • Total Due: PHP 500');
-    print('\n💡 Deadline: March 30, 2026');
-    
-    if (isInternetConnected == false) {
-      print('\n📱 [Cached: No pending as of March 10]');
-    }
-    
-  // Option 2: Show my schedule (📅 icon from wireframe)  
-  } else if (userIntent == 'show my schedule') {
-    print('📅 YOUR SCHEDULE TODAY:');
-    print('   • 8:00 AM - ITCC 105 (Room 203)');
-    print('   • 10:30 AM - MATH 101 (Room 105)');
-    print('   • 1:00 PM - PHILO 101 (Room 304)');
-    print('\n✅ Next class: ITCC 105 in 30 minutes');
-    
-    if (isInternetConnected == false) {
-      print('\n📱 [Cached: Regular MWF schedule]');
-    }
-    
-  // Option 3: Enrollment help (📋 icon from wireframe)  
-  } else if (userIntent == 'enrollment help') {
-    print('📋 ENROLLMENT REQUIREMENTS:');
-    print('   • Clearance from Library');
-    print('   • Clearance from Accounting');
-    print('   • Advising from Department');
-    print('   • Assessment at Registrar');
-    print('   • Payment at Cashier');
-    print('\n📅 Enrollment: May 15 - June 15, 2026');
-    
-    if (isInternetConnected == false) {
-      print('\n📱 [Cached: Same requirements apply]');
-    }
-    
-  // If user says something else
-  } else {
-    print('❌ I didn\'t understand "$userIntent"');
-    print('\n💡 Please try one of these:');
-    print('   • "check payment"');
-    print('   • "show my schedule"');
-    print('   • "enrollment help"');
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(  // 🔧 FIX: Wrap with SingleChildScrollView
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header: ASSCAT AI COPILOT
+                Text(
+                  "ASSCAT AI COPILOT",
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF6B0F1E),
+                    letterSpacing: 1,
+                  ),
+                ),
+                
+                SizedBox(height: 8),
+                
+                // Subtitle line
+                Container(
+                  width: 50,
+                  height: 3,
+                  color: Color(0xFF6B0F1E),
+                ),
+                
+                SizedBox(height: 40),
+                
+                // Question: What do you need?
+                Text(
+                  "What do you need?",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black87,
+                  ),
+                ),
+                
+                SizedBox(height: 30),
+                
+                // 3 Intent buttons with icons
+                _buildIntentCard(
+                  icon: Icons.attach_money,
+                  iconColor: Colors.green,
+                  title: "Check my payment",
+                  subtitle: "View balance and dues",
+                  onTap: () => processIntent("check payment"),
+                ),
+                
+                SizedBox(height: 12),
+                
+                _buildIntentCard(
+                  icon: Icons.calendar_today,
+                  iconColor: Colors.blue,
+                  title: "Show my schedule",
+                  subtitle: "Today's classes",
+                  onTap: () => processIntent("schedule"),
+                ),
+                
+                SizedBox(height: 12),
+                
+                _buildIntentCard(
+                  icon: Icons.description,
+                  iconColor: Colors.orange,
+                  title: "Enrollment help",
+                  subtitle: "Steps and requirements",
+                  onTap: () => processIntent("enrollment help"),
+                ),
+                
+                SizedBox(height: 40),
+                
+                // AI Response Container
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Color(0xFF6B0F1E).withOpacity(0.05), Colors.white],
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Color(0xFF6B0F1E).withOpacity(0.2)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.assistant, color: Color(0xFF6B0F1E), size: 20),
+                          SizedBox(width: 8),
+                          Text(
+                            "AI Copilot",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              color: Color(0xFF6B0F1E),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        aiResponse,
+                        style: TextStyle(
+                          fontSize: 14,
+                          height: 1.5,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                SizedBox(height: 30),
+                
+                // Tap to speak or type area
+                Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF5F5F5),
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(color: Colors.grey[300]!),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: "Tap to speak or type",
+                            hintStyle: TextStyle(color: Colors.grey[400]),
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                          ),
+                          onSubmitted: (value) {
+                            if (value.isNotEmpty) {
+                              processIntent(value.toLowerCase());
+                            }
+                          },
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(right: 8),
+                        child: IconButton(
+                          onPressed: () {
+                            processIntent("check payment");
+                          },
+                          icon: Icon(Icons.mic, color: Color(0xFF6B0F1E)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                SizedBox(height: 12),
+                
+                // Try suggestion: "check payment"
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.lightbulb, size: 16, color: Colors.grey[500]),
+                    SizedBox(width: 6),
+                    Text(
+                      "Try: \"check payment\"",
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey[600],
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ],
+                ),
+                
+                SizedBox(height: 20),
+                
+                // Offline indicator (if offline)
+                if (!isInternetConnected)
+                  Container(
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.orange[50],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.wifi_off, size: 16, color: Colors.orange[700]),
+                        SizedBox(width: 8),
+                        Text(
+                          "Offline mode - Cached data",
+                          style: TextStyle(fontSize: 12, color: Colors.orange[700]),
+                        ),
+                      ],
+                    ),
+                  ),
+                
+                SizedBox(height: 30), // Extra space at bottom
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
   
-  print('\n' + '─' * 35);
-  
-  // SAME footer as wireframe
-  if (isInternetConnected == false) {
-    print('🔌 OFFLINE-FIRST MODE | Last sync: March 14, 2026');
-  } else {
-    print('✅ Online mode | Real-time data active');
+  Widget _buildIntentCard({
+    required IconData icon,
+    required Color iconColor,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 18),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: Colors.grey[200]!),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.08),
+              blurRadius: 8,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            // Icon with circle background
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: iconColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: iconColor, size: 26),
+            ),
+            SizedBox(width: 15),
+            // Title and subtitle
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey[500],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Arrow icon
+            Icon(
+              Icons.chevron_right,
+              color: Colors.grey[400],
+              size: 22,
+            ),
+          ],
+        ),
+      ),
+    );
   }
-  
-  print('✨ ASSCAT AI Copilot - Your campus assistant ✨\n');
 }
